@@ -55,7 +55,7 @@ sudo apt install -y ffmpeg
 #--------------------------------------------------
 # Machine Learning hooks
 #--------------------------------------------------
-sudo apt install -y python3-pip python3-dev python3-opencv git unzip
+sudo apt install -y python3-pip python3-dev python3-opencv libopencv-dev git unzip
 sudo -H pip3 install opencv-contrib-python
 
 sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
