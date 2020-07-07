@@ -31,16 +31,23 @@ timedatectl
 #--------------------------------------------------
 # Install dependences
 #--------------------------------------------------
-sudo apt-get install -y build-essential cmake
-sudo apt-get install -y libmodule-build-perl
-sudo apt-get install -y make
+sudo apt install -y build-essential cmake
+sudo apt install -y libmodule-build-perl
+sudo apt install -y make
 
 sudo perl -MCPAN -e "install Config::IniFiles"
 sudo perl -MCPAN -e "install Crypt::Eksblowfish::Bcrypt"
 sudo perl -MCPAN -e "install Getopt::Long"
 
+sudo apt-get install libyaml-perl
+sudo perl -MCPAN -e "install Net::WebSocket::Server"
+
+sudo apt-get install libjson-perl
+
+perl -MCPAN -e "install LWP::Protocol::https"
+
 # Install Apache, MySQL, and PHP
-apt install -y tasksel
+sudo apt install -y tasksel
 tasksel install lamp-server
 
 # Install FFMPEG repository
@@ -71,7 +78,7 @@ sudo apt update
 sudo apt upgrade
 sudo apt dist-upgrade
 
-apt install -y zoneminder
+sudo apt install -y zoneminder
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 Mysql_secure_installation
@@ -104,7 +111,7 @@ chmod 740 /etc/zm/zm.conf
 chown root:www-data /etc/zm/zm.conf
 
 sudo adduser www-data video
-chown -R root:root /usr/share/zoneminder/
+chown -R www-data:www-data /usr/share/zoneminder/
 
 # Setup Apache2
 sudo a2enconf zoneminder
