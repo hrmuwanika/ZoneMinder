@@ -93,7 +93,7 @@ sudo systemctl start zoneminder
 #----------------------------------------------------------
 # set timezone
 #----------------------------------------------------------
-sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.3/apache2/php.ini
+sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.2/apache2/php.ini
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
