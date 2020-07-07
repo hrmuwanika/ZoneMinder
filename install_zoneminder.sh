@@ -31,20 +31,22 @@ timedatectl
 #--------------------------------------------------
 # Install dependences
 #--------------------------------------------------
-sudo apt install -y build-essential cmake
+sudo apt install -y build-essential cmake curl git unzip
 sudo apt install -y libmodule-build-perl
 sudo apt install -y make
+sudo apt install -y libcrypt-mysql-perl
+sudo apt install -y libcrypt-eksblowfish-perl
 
+sudo perl -MCPAN -e "install Crypt::MySQL"
 sudo perl -MCPAN -e "install Config::IniFiles"
 sudo perl -MCPAN -e "install Crypt::Eksblowfish::Bcrypt"
 sudo perl -MCPAN -e "install Getopt::Long"
 
-sudo apt-get install libyaml-perl
+sudo apt install -y libyaml-perl
 sudo perl -MCPAN -e "install Net::WebSocket::Server"
 
-sudo apt-get install libjson-perl
-
-perl -MCPAN -e "install LWP::Protocol::https"
+sudo apt install -y libjson-perl
+sudo perl -MCPAN -e "install LWP::Protocol::https"
 
 # Install Apache, MySQL, and PHP
 sudo apt install -y tasksel
@@ -62,7 +64,7 @@ sudo apt install -y ffmpeg
 #--------------------------------------------------
 # Machine Learning hooks
 #--------------------------------------------------
-sudo apt install -y python3-pip python3-dev python3-opencv libopencv-dev git unzip
+sudo apt install -y python3-pip python3-dev python3-opencv libopencv-dev
 sudo -H pip3 install opencv-contrib-python
 
 sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
@@ -81,7 +83,7 @@ sudo apt dist-upgrade
 sudo apt install -y zoneminder
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
-Mysql_secure_installation
+mysql_secure_installation
 
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
@@ -92,7 +94,7 @@ default-authentication-plugin=mysql_native_password
 EOF
 
 # Restart MySQL
-systemctl restart mysql
+sudo systemctl restart mysql
 
 # Create the zoneminder database
 sudo mysql -uroot -p < /usr/share/zoneminder/db/zm_create.sql
