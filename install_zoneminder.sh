@@ -31,6 +31,14 @@ timedatectl
 #--------------------------------------------------
 # Install dependences
 #--------------------------------------------------
+sudo apt-get install -y build-essential cmake
+sudo apt-get install -y libmodule-build-perl
+sudo apt-get install -y make
+
+sudo perl -MCPAN -e "install Config::IniFiles"
+sudo perl -MCPAN -e "install Crypt::Eksblowfish::Bcrypt"
+sudo perl -MCPAN -e "install Getopt::Long"
+
 # Install Apache, MySQL, and PHP
 apt install -y tasksel
 tasksel install lamp-server
@@ -47,21 +55,21 @@ sudo apt install -y ffmpeg
 #--------------------------------------------------
 # Machine Learning hooks
 #--------------------------------------------------
-sudo apt install -y python3-pip python3-dev git unzip
-sudo -H pip3 install --upgrade pip
+sudo apt install -y python3-pip python3-dev python3-opencv git unzip
 sudo -H pip3 install opencv-contrib-python
 
-sudo apt-get install libopenblas-dev liblapack-dev libblas-dev
-sudo -H pip3 install dlib --verbose --no-cache-dir
+sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
+sudo -H pip3 install dlib
+sudo -H pip3 install --upgrade pip
 sudo -H pip3 install face_recognition
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-apt install -y software-properties-common
-add-apt-repository ppa:iconnor/zoneminder-1.34
-apt update
-apt upgrade
-apt dist-upgrade
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:iconnor/zoneminder-1.34
+sudo apt update
+sudo apt upgrade
+sudo apt dist-upgrade
 
 apt install -y zoneminder
 
@@ -95,15 +103,15 @@ MYSQL_SCRIPT
 chmod 740 /etc/zm/zm.conf
 chown root:www-data /etc/zm/zm.conf
 
-adduser www-data video
+sudo adduser www-data video
 chown -R root:root /usr/share/zoneminder/
 
 # Setup Apache2
-a2enconf zoneminder
-a2enmod rewrite
-a2enmod cgi
-a2enmod expires
-a2enmod headers
+sudo a2enconf zoneminder
+sudo a2enmod rewrite
+sudo a2enmod cgi
+sudo a2enmod expires
+sudo a2enmod headers
 
 # Enable and start the ZoneMinder service
 sudo systemctl enable zoneminder
