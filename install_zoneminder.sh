@@ -35,6 +35,14 @@ timedatectl
 apt install -y tasksel
 tasksel install lamp-server
 
+# Install FFMPEG repository
+sudo add-apt-repository ppa:jonathonf/ffmpeg-4
+sudo apt update
+
+#--------------------------------------------------
+# Install FFmpeg
+#--------------------------------------------------
+sudo apt install -y ffmpeg
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
