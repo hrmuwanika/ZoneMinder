@@ -37,12 +37,23 @@ tasksel install lamp-server
 
 # Install FFMPEG repository
 sudo add-apt-repository ppa:jonathonf/ffmpeg-4
-sudo apt update
+sudo apt update && sudo apt upgrade -y
 
 #--------------------------------------------------
 # Install FFmpeg
 #--------------------------------------------------
 sudo apt install -y ffmpeg
+
+#--------------------------------------------------
+# Machine Learning hooks
+#--------------------------------------------------
+sudo apt install -y python3-pip python3-dev git unzip
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install opencv-contrib-python
+
+sudo apt-get install libopenblas-dev liblapack-dev libblas-dev
+sudo -H pip3 install dlib --verbose --no-cache-dir
+sudo -H pip3 install face_recognition
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
