@@ -29,8 +29,22 @@ timedatectl set-timezone Africa/Kigali
 timedatectl
 
 #--------------------------------------------------
-# Install dependences
+# Install FFMPEG
 #--------------------------------------------------
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:jonathonf/ffmpeg-4
+sudo apt update 
+sudo apt upgrade -y
+sudo apt install -y ffmpeg
+
+#--------------------------------------------------
+# Install python and opencv
+#--------------------------------------------------
+sudo apt install -y python3-pip python3-dev python3-setuptools python3-opencv libopencv-dev
+sudo python3 -m pip install --upgrade pip
+sudo -H pip3 install opencv-contrib-python
+
+# Install other dependencies
 sudo apt install -y build-essential cmake curl git unzip gcc
 sudo apt install -y libmodule-build-perl
 sudo apt install -y make
@@ -48,33 +62,20 @@ sudo perl -MCPAN -e "install Net::WebSocket::Server"
 sudo apt install -y libjson-perl
 sudo perl -MCPAN -e "install LWP::Protocol::https"
 
+#--------------------------------------------------
+# Machine Learning hooks
+#--------------------------------------------------
+sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
+sudo -H pip3 install dlib
+sudo -H pip3 install face_recognition
+
 # Install Apache, MySQL, and PHP
 sudo apt install -y tasksel
 tasksel install lamp-server
 
-# Install FFMPEG repository
-sudo add-apt-repository ppa:jonathonf/ffmpeg-4
-sudo apt update && sudo apt upgrade -y
-
-#--------------------------------------------------
-# Install FFmpeg
-#--------------------------------------------------
-sudo apt install -y ffmpeg
-
-#--------------------------------------------------
-# Machine Learning hooks
-#--------------------------------------------------
-sudo apt install -y python3-pip python3-dev python3-opencv libopencv-dev
-sudo -H pip3 install opencv-contrib-python
-
-sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
-#sudo -H pip3 install dlib
-sudo -H pip3 install --upgrade pip
-sudo -H pip3 install face_recognition
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:iconnor/zoneminder-1.34
 sudo apt update
 sudo apt upgrade
@@ -83,7 +84,7 @@ sudo apt dist-upgrade
 sudo apt install -y zoneminder
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
-mysql_secure_installation
+#mysql_secure_installation
 
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
