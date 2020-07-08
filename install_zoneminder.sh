@@ -31,7 +31,7 @@ timedatectl
 #--------------------------------------------------
 # Install dependences
 #--------------------------------------------------
-sudo apt install -y build-essential cmake curl git unzip
+sudo apt install -y build-essential cmake curl git unzip gcc
 sudo apt install -y libmodule-build-perl
 sudo apt install -y make
 sudo apt install -y libcrypt-mysql-perl
