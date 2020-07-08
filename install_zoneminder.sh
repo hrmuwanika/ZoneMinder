@@ -68,7 +68,7 @@ sudo apt install -y python3-pip python3-dev python3-opencv libopencv-dev
 sudo -H pip3 install opencv-contrib-python
 
 sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
-sudo -H pip3 install dlib
+#sudo -H pip3 install dlib
 sudo -H pip3 install --upgrade pip
 sudo -H pip3 install face_recognition
 #--------------------------------------------------
