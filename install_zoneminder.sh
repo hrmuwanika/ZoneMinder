@@ -45,6 +45,7 @@ sudo python3 -m pip install --upgrade pip
 sudo -H pip3 install opencv-contrib-python
 
 # Install other dependencies
+sudo apt install -y libboost-all-dev libgtk-3-dev scikit-image
 sudo apt install -y build-essential cmake curl git unzip gcc
 sudo apt install -y libmodule-build-perl
 sudo apt install -y make
@@ -66,8 +67,9 @@ sudo perl -MCPAN -e "install LWP::Protocol::https"
 # Machine Learning hooks
 #--------------------------------------------------
 sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
-#sudo -H pip3 install dlib
-#sudo -H pip3 install face_recognition
+sudo pip3 install numpy scikit-learn cmake
+sudo pip3 install dlib
+sudo pip3 install face_recognition
 
 # Install Apache, MySQL, and PHP
 sudo apt install -y tasksel
@@ -84,7 +86,7 @@ sudo apt dist-upgrade
 sudo apt install -y zoneminder
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
-mysql_secure_installation
+#mysql_secure_installation
 
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
