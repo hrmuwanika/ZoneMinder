@@ -47,6 +47,8 @@ sudo -H pip3 install opencv-contrib-python
 # Install other dependencies
 sudo apt install -y libboost-all-dev libgtk-3-dev scikit-image
 sudo apt install -y build-essential cmake curl git unzip gcc
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3 get-pip.py
 sudo apt install -y libmodule-build-perl
 sudo apt install -y make
 sudo apt install -y libcrypt-mysql-perl
@@ -67,7 +69,7 @@ sudo perl -MCPAN -e "install LWP::Protocol::https"
 # Machine Learning hooks
 #--------------------------------------------------
 sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
-sudo pip3 install numpy scikit-learn cmake
+sudo pip3 install numpy scipy scikit-image
 sudo pip3 install dlib
 sudo pip3 install face_recognition
 
