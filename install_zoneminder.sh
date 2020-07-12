@@ -65,14 +65,6 @@ sudo perl -MCPAN -e "install Net::WebSocket::Server"
 sudo apt install -y libjson-perl
 sudo perl -MCPAN -e "install LWP::Protocol::https"
 
-#--------------------------------------------------
-# Machine Learning hooks
-#--------------------------------------------------
-sudo apt install -y libopenblas-dev liblapack-dev libblas-dev 
-sudo pip3 install numpy scipy scikit-image
-sudo pip3 install dlib
-sudo pip3 install face_recognition
-
 # Install Apache, MySQL, and PHP
 sudo apt install -y tasksel
 tasksel install lamp-server
