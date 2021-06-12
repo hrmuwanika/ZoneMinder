@@ -72,7 +72,7 @@ tasksel install lamp-server
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-sudo add-apt-repository ppa:iconnor/zoneminder-1.34
+sudo add-apt-repository ppa:iconnor/zoneminder-1.36
 sudo apt update
 sudo apt upgrade
 sudo apt dist-upgrade
