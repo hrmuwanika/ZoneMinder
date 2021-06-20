@@ -3,7 +3,15 @@
 ##############################################################
 #### Installation of zoneminder on Ubuntu 18.04 with LAMP ####
 ##############################################################
-
+#
+#
+# Set to "True" to install certbot and have ssl enabled, "False" to use http
+ENABLE_SSL="True"
+# Set the website name
+WEBSITE_NAME="example.com"
+# Provide Email to register ssl certificate
+ADMIN_EMAIL="odoo@example.com"
+##
 #----------------------------------------------------
 # Disable password authentication
 #----------------------------------------------------
@@ -130,6 +138,22 @@ sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.2/a
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
+
+if [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "odoo@example.com" ]  && [ $WEBSITE_NAME != "example.com" ];then
+  sudo apt install snapd -y
+  sudo apt-get remove certbot
+  
+  sudo snap install core
+  sudo snap refresh core
+  sudo snap install --classic certbot
+  sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  sudo certbot --apache -d $WEBSITE_NAME --noninteractive --agree-tos --email $ADMIN_EMAIL --redirect
+  sudo systemctl reload apache2
+  
+  echo "\n============ SSL/HTTPS is enabled! ========================"
+else
+  echo "\n==== SSL/HTTPS isn't enabled due to choice of the user or because of a misconfiguration! ======"
+fi
 
 echo -e "Open Zoneminder http://hostname_or_ip/zm/"
 
