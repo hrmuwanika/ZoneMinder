@@ -41,8 +41,10 @@ timedatectl
 #--------------------------------------------------
 sudo apt install -y software-properties-common
 sudo add-apt-repository ppa:jonathonf/ffmpeg-4
+
 sudo apt update 
 sudo apt upgrade -y
+
 sudo apt install -y ffmpeg
 
 # Install Apache, MySQL, and PHP
@@ -66,10 +68,9 @@ sudo systemctl enable zoneminder
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
 
-cat >> /etc/my.cnf <<EOF
-[mysqld]
-default-authentication-plugin=mysql_native_password
-EOF
+nano /etc/mysql/my.cnf
+# paste this text below
+# sql_mode = NO_ENGINE_SUBSTITUTION
 
 # Restart MySQL
 sudo systemctl restart mysql
@@ -101,7 +102,6 @@ sudo a2enmod expires
 sudo a2enmod headers
 
 # Enable and start the ZoneMinder service
-sudo systemctl enable zoneminder
 sudo systemctl start zoneminder
 sudo systemctl reload apache2
 
