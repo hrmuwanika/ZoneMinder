@@ -25,7 +25,8 @@ sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
 # Install Apache, MySQL, and PHP
-sudo apt install -y apache2 mariadb-server php libapache2-mod-php php-mysql gnupg2 nano
+sudo apt-get install tasksel
+sudo tasksel install lamp-server
 
 sudo systemctl enable --now apache2 mysql
 
@@ -51,9 +52,12 @@ nano /etc/mysql/my.cnf
 # Restart MySQL
 sudo systemctl restart mysql
 
-# import the zoneminder database
-sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql
-sudo mysql -uroot --password="" -e "grant lock tables,alter,drop,select,insert,update,delete,create,index,alter routine,create routine, trigger,execute on zm.* to 'zmuser'@localhost identified by 'zmpass';"
+# create the zoneminder database
+sudo mysql -uroot --password="" -e "drop database zm;"
+sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
+sudo mysql -uroot --password="" -e "ALTER USER 'zmuser'@localhost IDENTIFIED BY 'zmpass';"
+sudo mysql -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;"
+sudo mysql -uroot --password="" -e "FLUSH PRIVILEGES ;
 
 # Fix permissions
 chmod 740 /etc/zm/zm.conf
