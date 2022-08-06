@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##############################################################
-#### Installation of zoneminder on Ubuntu 20.04 with LAMP ####
+#### Installation of zoneminder on Ubuntu 22.04 with LAMP ####
 ##############################################################
 #
 #
@@ -36,17 +36,6 @@ sudo apt autoremove -y
 timedatectl set-timezone Africa/Kigali
 timedatectl
 
-#--------------------------------------------------
-# Install FFMPEG
-#--------------------------------------------------
-sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:jonathonf/ffmpeg-4
-
-sudo apt update 
-sudo apt upgrade -y
-
-sudo apt install -y ffmpeg
-
 # Install Apache, MySQL, and PHP
 sudo apt install -y tasksel
 tasksel install lamp-server
@@ -67,10 +56,6 @@ sudo systemctl enable zoneminder
 
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
-
-nano /etc/mysql/my.cnf
-# paste this text below
-# sql_mode = NO_ENGINE_SUBSTITUTION
 
 # Restart MySQL
 sudo systemctl restart mysql
@@ -108,7 +93,7 @@ sudo systemctl reload apache2
 #----------------------------------------------------------
 # set timezone
 #----------------------------------------------------------
-sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.2/apache2/php.ini
+sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.1/apache2/php.ini
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
