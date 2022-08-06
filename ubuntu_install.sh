@@ -63,7 +63,7 @@ sudo adduser www-data video
 chown -R www-data:www-data /usr/share/zoneminder/
 
 # Setup Apache2
-sudo a2enmod rewrite expires headers
+sudo a2enmod rewrite expires headers cgi
 sudo a2enconf zoneminder
 
 # Enable and start the ZoneMinder service
