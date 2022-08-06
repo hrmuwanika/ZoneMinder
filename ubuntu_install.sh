@@ -25,7 +25,7 @@ sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
 # Install Apache, MySQL, and PHP
-sudo apt install -y apache2 mysql-server php libapache2-mod-php php-mysql gnupg2
+sudo apt install -y apache2 mysql-server php libapache2-mod-php php-mysql gnupg2 nano
 
 sudo systemctl enable --now apache2 mysql
 
