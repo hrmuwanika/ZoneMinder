@@ -64,20 +64,18 @@ sudo systemctl enable zoneminder
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
 
+nano /etc/mysql/my.cnf
+# paste at the bottom
+# sql_mode = NO_ENGINE_SUBSTITUTION
+
 # Restart MySQL
 sudo systemctl restart mysql
 
-# Create the zoneminder database
+# import the zoneminder database
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql
+sudo mysql -uroot --password="" -e "grant lock tables,alter,drop,select,insert,update,delete,create,index,alter routine,create routine, trigger,execute on zm.* to 'zmuser'@localhost identified by 'zmpass';"
 
-#-----------------------------------------------------------------
-# Create user and set permissions (press Enter after each entry)
-#---------------------------------------------------------------
-mysql -u root --password="" <<MYSQL_SCRIPT
-CREATE USER 'zmuser'@localhost IDENTIFIED WITH mysql_native_password BY 'zmpass';
-GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-MYSQL_SCRIPT
+
 
 # Fix permissions
 chmod 740 /etc/zm/zm.conf
