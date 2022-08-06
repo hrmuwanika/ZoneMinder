@@ -4,29 +4,11 @@
 #### Installation of zoneminder on Ubuntu 22.04 with LAMP ####
 ##############################################################
 #
-#
-# Set to "True" to install certbot and have ssl enabled, "False" to use http
-ENABLE_SSL="True"
-# Set the website name
-WEBSITE_NAME="example.com"
-# Provide Email to register ssl certificate
-ADMIN_EMAIL="vms@example.com"
-##
-#
-clear
 #----------------------------------------------------
 read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (MySQL or Mariadb) installed...
 Press Enter to continue or Ctrl + c to quit" nothing
 #----------------------------------------------------
 clear
-
-#----------------------------------------------------
-# Disable password authentication
-#----------------------------------------------------
-sudo sed -i 's/#ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config 
-sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo service sshd restart
 
 #--------------------------------------------------
 # Update Server
@@ -41,10 +23,9 @@ sudo apt autoremove -y
 # set the correct timezone on ubuntu
 sudo timedatectl set-timezone Africa/Kigali
 timedatectl
-clear
+
 # Install Apache, MySQL, and PHP
-sudo apt-get install tasksel
-sudo tasksel install lamp-server
+sudo apt install -y apache2 mysql-server php libapache2-mod-php php-mysql gnupg2
 
 sudo systemctl enable --now apache2 mysql
 
@@ -97,22 +78,6 @@ sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.1/a
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
-
-if [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "vms@example.com" ]  && [ $WEBSITE_NAME != "example.com" ];then
-  sudo apt install snapd -y
-  sudo apt-get remove certbot
-  
-  sudo snap install core
-  sudo snap refresh core
-  sudo snap install --classic certbot
-  sudo ln -s /snap/bin/certbot /usr/bin/certbot
-  sudo certbot --apache -d $WEBSITE_NAME --noninteractive --agree-tos --email $ADMIN_EMAIL --redirect
-  sudo systemctl reload apache2
-  
-  echo "\n============ SSL/HTTPS is enabled! ========================"
-else
-  echo "\n==== SSL/HTTPS isn't enabled due to choice of the user or because of a misconfiguration! ======"
-fi
 
 clear
 #----------------------------------------------------
