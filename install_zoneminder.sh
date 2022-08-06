@@ -14,8 +14,10 @@ ADMIN_EMAIL="vms@example.com"
 ##
 #
 clear
+#----------------------------------------------------
 read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (MySQL or Mariadb) installed...
 Press Enter to continue or Ctrl + c to quit" nothing
+#----------------------------------------------------
 clear
 
 #----------------------------------------------------
@@ -32,26 +34,24 @@ sudo service sshd restart
 echo -e "\n============== Update Server ======================="
 sudo apt update && sudo apt upgrade -y
 sudo apt autoremove -y
-clear
+
 #--------------------------------------------------
 # Set up the timezones
 #--------------------------------------------------
-
 # set the correct timezone on ubuntu
 sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 clear
 # Install Apache, MySQL, and PHP
-sudo apt install -y apache2 php mysql-server php-mysql libapache2-mod-php 
+sudo apt-get install tasksel
+sudo tasksel install lamp-server
+
 sudo systemctl enable --now apache2 mysql
 
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-read -p "Next we will add the PPA repository, install and configure the system to run Zoneminder. 
-Press enter to continue" nothing
 apt install -y software-properties-common
-clear
 sudo add-apt-repository ppa:iconnor/zoneminder-1.36
 sudo apt update && sudo apt upgrade
 
@@ -74,8 +74,6 @@ sudo systemctl restart mysql
 # import the zoneminder database
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql
 sudo mysql -uroot --password="" -e "grant lock tables,alter,drop,select,insert,update,delete,create,index,alter routine,create routine, trigger,execute on zm.* to 'zmuser'@localhost identified by 'zmpass';"
-
-
 
 # Fix permissions
 chmod 740 /etc/zm/zm.conf
@@ -117,5 +115,7 @@ else
 fi
 
 clear
+#----------------------------------------------------
 read -p "Install complete. Open Zoneminder/Options and set the timezone. Press enter to continue" nothing
+#----------------------------------------------------
 
