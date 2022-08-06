@@ -35,7 +35,7 @@ sudo apt install -y zoneminder=1.36.11-bullseye1
 sudo systemctl enable zoneminder.service
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
-#mysql_secure_installation
+# mysql_secure_installation
 
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
