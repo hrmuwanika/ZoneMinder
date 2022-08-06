@@ -32,7 +32,6 @@ sudo systemctl enable --now apache2 mysql
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-apt install -y software-properties-common
 sudo add-apt-repository ppa:iconnor/zoneminder-1.36
 sudo apt update && sudo apt upgrade
 
