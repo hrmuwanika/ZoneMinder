@@ -12,6 +12,12 @@ WEBSITE_NAME="example.com"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="vms@example.com"
 ##
+#
+clear
+read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (MySQL or Mariadb) installed...
+Press Enter to continue or Ctrl + c to quit" nothing
+clear
+
 #----------------------------------------------------
 # Disable password authentication
 #----------------------------------------------------
@@ -24,29 +30,30 @@ sudo service sshd restart
 # Update Server
 #--------------------------------------------------
 echo -e "\n============== Update Server ======================="
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 sudo apt autoremove -y
-
+clear
 #--------------------------------------------------
 # Set up the timezones
 #--------------------------------------------------
 
 # set the correct timezone on ubuntu
-timedatectl set-timezone Africa/Kigali
+sudo timedatectl set-timezone Africa/Kigali
 timedatectl
-
+clear
 # Install Apache, MySQL, and PHP
-sudo apt install -y tasksel
-tasksel install lamp-server
-sudo apt install -y software-properties-common
+sudo apt install -y apache2 php mysql-server php-mysql libapache2-mod-php 
+sudo systemctl enable --now apache2 mysql
 
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
+read -p "Next we will add the PPA repository, install and configure the system to run Zoneminder. 
+Press enter to continue" nothing
+apt install -y software-properties-common
+clear
 sudo add-apt-repository ppa:iconnor/zoneminder-1.36
-sudo apt update
-sudo apt upgrade
+sudo apt update && sudo apt upgrade
 
 sudo apt install -y zoneminder
 sudo systemctl enable zoneminder
@@ -61,7 +68,7 @@ cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
 sudo systemctl restart mysql
 
 # Create the zoneminder database
-sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
+sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql
 
 #-----------------------------------------------------------------
 # Create user and set permissions (press Enter after each entry)
@@ -80,14 +87,11 @@ sudo adduser www-data video
 chown -R www-data:www-data /usr/share/zoneminder/
 
 # Setup Apache2
+sudo a2enmod rewrite expires headers
 sudo a2enconf zoneminder
-sudo a2enmod rewrite
-sudo a2enmod cgi
-sudo a2enmod expires
-sudo a2enmod headers
 
 # Enable and start the ZoneMinder service
-sudo systemctl start zoneminder
+sudo systemctl restart zoneminder
 sudo systemctl reload apache2
 
 #----------------------------------------------------------
@@ -98,7 +102,7 @@ sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.1/a
 # Restart the Apache2 service
 sudo systemctl restart apache2
 
-if [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "odoo@example.com" ]  && [ $WEBSITE_NAME != "example.com" ];then
+if [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "vms@example.com" ]  && [ $WEBSITE_NAME != "example.com" ];then
   sudo apt install snapd -y
   sudo apt-get remove certbot
   
@@ -114,5 +118,6 @@ else
   echo "\n==== SSL/HTTPS isn't enabled due to choice of the user or because of a misconfiguration! ======"
 fi
 
-echo -e "Open Zoneminder http://hostname_or_ip/zm/"
+clear
+read -p "Install complete. Open Zoneminder/Options and set the timezone. Press enter to continue" nothing
 
