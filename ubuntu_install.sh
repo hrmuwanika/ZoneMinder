@@ -57,7 +57,7 @@ sudo mysql -uroot --password="" -e "drop database zm;"
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
 sudo mysql -uroot --password="" -e "ALTER USER 'zmuser'@localhost IDENTIFIED BY 'zmpass';"
 sudo mysql -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;"
-sudo mysql -uroot --password="" -e "FLUSH PRIVILEGES ;
+sudo mysql -uroot --password="" -e "FLUSH PRIVILEGES;"
 
 # Fix permissions
 chmod 740 /etc/zm/zm.conf
