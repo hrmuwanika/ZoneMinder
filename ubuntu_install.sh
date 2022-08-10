@@ -25,7 +25,14 @@ sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
 # Install Apache, MySQL, and PHP
-sudo apt install -y apache2 mariadb-server php libapache2-mod-php php-mysql msmtp tzdata gnupg
+sudo apt install -y apache2 php libapache2-mod-php php-mysql msmtp tzdata gnupg curl apt-transport-https software-properties-common \
+lsb-release ca-certificates gnupg2
+
+curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+sudo bash mariadb_repo_setup --mariadb-server-version=10.7
+sudo apt update
+
+sudo apt install mariadb-server mariadb-client
 
 sudo systemctl enable --now apache2 mysql
 
@@ -44,7 +51,7 @@ sudo systemctl enable zoneminder
 rm /etc/mysql/my.cnf
 cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
 
-nano /etc/mysql/my.cnf
+# nano /etc/mysql/my.cnf
 # paste at the bottom
 # sql_mode = NO_ENGINE_SUBSTITUTION
 
@@ -52,7 +59,6 @@ nano /etc/mysql/my.cnf
 sudo systemctl restart mysql
 
 # create the zoneminder database
-sudo mysql -uroot --password="" -e "drop database zm;"
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
 sudo mysql -uroot --password="" -e "ALTER USER 'zmuser'@localhost IDENTIFIED BY 'zmpass';"
 sudo mysql -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;"
@@ -77,7 +83,7 @@ sudo systemctl reload apache2
 #----------------------------------------------------------
 # set timezone
 #----------------------------------------------------------
-sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.1/apache2/php.ini
+sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.4/apache2/php.ini
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
