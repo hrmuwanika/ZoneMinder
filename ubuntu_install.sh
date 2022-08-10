@@ -24,9 +24,11 @@ sudo apt autoremove -y
 sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
-# Install Apache, MySQL, and PHP
-sudo apt install -y apache2 php libapache2-mod-php php-mysql msmtp tzdata gnupg curl apt-transport-https software-properties-common \
-lsb-release ca-certificates gnupg2
+# Install Apache PHP and other dependencies
+sudo apt install -y apache2 php libapache2-mod-php php-mysql msmtp tzdata gnupg ca-certificates  
+
+# Mariadb dependencies
+sudo apt install curl apt-transport-https software-properties-common lsb-release ca-certificates gnupg2 dirmngr
 
 curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
 sudo bash mariadb_repo_setup --mariadb-server-version=10.7
@@ -34,7 +36,7 @@ sudo apt update && sudo apt upgrade -y
 
 sudo apt install -y mariadb-server 
 
-sudo systemctl enable --now apache2 mysql
+sudo systemctl enable --now apache2 mariadb
 
 #--------------------------------------------------
 # ZoneMinder repository
