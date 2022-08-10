@@ -5,7 +5,7 @@
 ##############################################################
 #
 #----------------------------------------------------
-read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (MySQL or Mariadb) installed...
+read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (Apache Php Mariadb) installed...
 Press Enter to continue or Ctrl + c to quit" nothing
 #----------------------------------------------------
 clear
@@ -30,9 +30,9 @@ lsb-release ca-certificates gnupg2
 
 curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
 sudo bash mariadb_repo_setup --mariadb-server-version=10.7
-sudo apt update
+sudo apt update && sudo apt upgrade -y
 
-sudo apt install mariadb-server mariadb-client
+sudo apt install -y mariadb-server 
 
 sudo systemctl enable --now apache2 mysql
 
