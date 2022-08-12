@@ -5,7 +5,7 @@
 ##############################################################
 #
 #----------------------------------------------------
-read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04, 20.04 or 18.04 with LAMP (Apache Php Mariadb) installed...
+read -p "This script installs ZoneMinder 1.37.x on Ubuntu 20.04 with LAMP (Apache Php Mariadb) installed...
 Press Enter to continue or Ctrl + c to quit" nothing
 #----------------------------------------------------
 clear
