@@ -31,10 +31,10 @@ sudo apt install -y apache2 php libapache2-mod-php php-mysql msmtp tzdata gnupg 
 sudo apt install curl apt-transport-https software-properties-common lsb-release ca-certificates gnupg2 dirmngr
 
 curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-sudo bash mariadb_repo_setup --mariadb-server-version=10.7
+sudo bash mariadb_repo_setup --mariadb-server-version=10.8
 sudo apt update && sudo apt upgrade -y
 
-sudo apt install -y mariadb-server 
+sudo apt install -y mariadb-server mariadb-client
 
 sudo systemctl enable --now apache2 mariadb
 
