@@ -50,15 +50,13 @@ sudo systemctl enable zoneminder
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 #mysql_secure_installation
 
-rm /etc/mysql/my.cnf
-cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
-
-# nano /etc/mysql/my.cnf
+# remove mariadb strict mode
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 # paste at the bottom
-# sql_mode = NO_ENGINE_SUBSTITUTION
+# sql_mode = "NO_ENGINE_SUBSTITUTION"
 
 # Restart MySQL
-sudo systemctl restart mysql
+sudo systemctl restart mariadb.service
 
 # create the zoneminder database
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
