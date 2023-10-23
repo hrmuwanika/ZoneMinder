@@ -50,10 +50,10 @@ sudo systemctl enable zoneminder
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 #mysql_secure_installation
 
-# remove mariadb strict mode
-sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-# paste at the bottom
-# sql_mode = "NO_ENGINE_SUBSTITUTION"
+# Remove mariadb strict mode by setting sql_mode = NO_ENGINE_SUBSTITUTION
+sudo rm /etc/mysql/mariadb.conf.d/50-server.cnf
+cd /etc/mysql/mariadb.conf.d/
+wget https://raw.githubusercontent.com/hrmuwanika/vicidial-install-scripts/main/50-server.cnf
 
 # Restart MySQL
 sudo systemctl restart mariadb.service
