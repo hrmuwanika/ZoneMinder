@@ -52,11 +52,87 @@ sudo systemctl enable zoneminder
 
 # Remove mariadb strict mode by setting sql_mode = NO_ENGINE_SUBSTITUTION
 sudo rm /etc/mysql/mariadb.conf.d/50-server.cnf
-cd /etc/mysql/mariadb.conf.d/
-wget https://raw.githubusercontent.com/hrmuwanika/vicidial-install-scripts/main/50-server.cnf
+
+cat <<MYSQLCONF>> /etc/mysql/mariadb.conf.d/50-server.cnf
+[mysql.server]
+user = mysql
+#basedir = /var/lib
+
+[client]
+port = 3306
+socket = /var/lib/mysql/mysql.sock
+
+[mysqld]
+datadir = /var/lib/mysql
+#tmpdir = /home/mysql_tmp
+socket = /var/lib/mysql/mysql.sock
+user = mysql
+old_passwords = 0
+ft_min_word_len = 3
+max_connections = 800
+max_allowed_packet = 32M
+skip-external-locking
+sql_mode="NO_ENGINE_SUBSTITUTION"
+
+log-error = /var/log/mysqld/mysqld.log
+
+query-cache-type = 1
+query-cache-size = 32M
+
+long_query_time = 1
+#slow_query_log = 1
+#slow_query_log_file = /var/log/mysqld/slow-queries.log
+
+tmp_table_size = 128M
+table_cache = 1024
+
+join_buffer_size = 1M
+key_buffer = 512M
+sort_buffer_size = 6M
+read_buffer_size = 4M
+read_rnd_buffer_size = 16M
+myisam_sort_buffer_size = 64M
+
+max_tmp_tables = 64
+
+thread_cache_size = 8
+thread_concurrency = 8
+
+# If using replication, uncomment log-bin below
+#log-bin = mysql-bin
+
+[mysqldump]
+quick
+max_allowed_packet = 16M
+
+[mysql]
+no-auto-rehash
+
+[isamchk]
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
+
+[myisamchk]
+key_buffer = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
+
+[mysqlhotcopy]
+interactive-timeout
+
+[mysqld_safe]
+#log-error = /var/log/mysqld/mysqld.log
+#pid-file = /var/run/mysqld/mysqld.pid
+MYSQLCONF
 
 # Restart MySQL
-sudo systemctl restart mariadb.service
+mkdir /var/log/mysqld
+touch /var/log/mysqld/slow-queries.log
+sudo chown -R mysql:mysql /var/log/mysqld
+sudo systemctl restart mariadb
 
 # create the zoneminder database
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
