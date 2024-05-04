@@ -20,9 +20,18 @@ sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
 # Install Apache, MySQL, and PHP
+# Install mariadb databases
+curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=11.2
+sudo apt update
+
+sudo apt install -y ca-certificates apt-transport-https software-properties-common 
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list 
+sudo apt update
+
 sudo apt install -y apache2 mariadb-server php libapache2-mod-php php-mysql lsb-release gnupg2
 
-sudo systemctl enable --now apache2 mysql
+sudo systemctl enable --now apache2 mariadb
 
 #--------------------------------------------------
 # ZoneMinder repository
@@ -37,15 +46,13 @@ sudo systemctl enable zoneminder.service
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 # mysql_secure_installation
 
-rm /etc/mysql/my.cnf
-cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/my.cnf
-
-nano /etc/mysql/my.cnf
-# paste at the bottom
-# sql_mode = NO_ENGINE_SUBSTITUTION
+# Remove mariadb strict mode by setting sql_mode = NO_ENGINE_SUBSTITUTION
+sudo rm /etc/mysql/mariadb.conf.d/50-server.cnf
+cd /etc/mysql/mariadb.conf.d/
+wget https://raw.githubusercontent.com/hrmuwanika/ZoneMinder/master/50-server.cnf
 
 # Restart MySQL
-sudo systemctl restart mysql
+sudo systemctl restart mariadb.service
 
 # create the zoneminder database
 sudo mysql -uroot --password="" -e "drop database zm;"
