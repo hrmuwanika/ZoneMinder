@@ -52,7 +52,8 @@ sudo systemctl enable zoneminder
 
 # Remove mariadb strict mode by setting sql_mode = NO_ENGINE_SUBSTITUTION
 sudo rm /etc/mysql/mariadb.conf.d/50-server.cnf
-
+cd /etc/mysql/mariadb.conf.d/
+wget https://raw.githubusercontent.com/hrmuwanika/ZoneMinder/master/50-server.cnf
 
 # create the zoneminder database
 sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
