@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##############################################################
-#### Installation of zoneminder on Debian Bulls eye ####
+#### Installation of zoneminder on Debian 12 ####
 ##############################################################
 
 #--------------------------------------------------
@@ -36,12 +36,17 @@ sudo systemctl enable --now apache2 mariadb
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
+sudo echo 'deb http://deb.debian.org/debian bookworm-backports main contrib' >> /etc/apt/sources.list
+sudo apt update
+sudo apt -t bookworm-backports install zoneminder
+
 echo "deb https://zmrepo.zoneminder.com/debian/release-1.36 "`lsb_release -c -s`"/" >> /etc/apt/sources.list.d/zoneminder.list
 wget -O - https://zmrepo.zoneminder.com/debian/archive-keyring.gpg | sudo apt-key add -
 sudo apt update && sudo apt upgrade
 
-sudo apt install -y zoneminder=1.36.11-bullseye1
+sudo apt install -y zoneminder
 sudo systemctl enable zoneminder.service
+sudo systemctl start zoneminder.service
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 # mysql_secure_installation
@@ -55,25 +60,29 @@ wget https://raw.githubusercontent.com/hrmuwanika/ZoneMinder/master/50-server.cn
 sudo systemctl restart mariadb.service
 
 # create the zoneminder database
-sudo mysql -uroot --password="" -e "drop database zm;"
-sudo mysql -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
-sudo mysql -uroot --password="" -e "ALTER USER 'zmuser'@localhost IDENTIFIED BY 'zmpass';"
-sudo mysql -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;"
-sudo mysql -uroot --password="" -e "FLUSH PRIVILEGES;"
+sudo mariadb -uroot --password="" -e "drop database zm;"
+sudo mariadb -uroot --password="" < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
+sudo mariadb -uroot --password="" -e "ALTER USER 'zmuser'@localhost IDENTIFIED BY 'zmpass';"
+sudo mariadb -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' WITH GRANT OPTION;"
+sudo mariadb -uroot --password="" -e "FLUSH PRIVILEGES;"
 
 # Fix permissions
 chmod 740 /etc/zm/zm.conf
-chown root:www-data /etc/zm/zm.conf
+# chown root:www-data /etc/zm/zm.conf
+sudo chgrp -c www-data /etc/zm/zm.conf
 
 sudo adduser www-data video
 chown -R www-data:www-data /usr/share/zoneminder/
 
 # Setup Apache2
-sudo a2enmod rewrite expires headers
 sudo a2enconf zoneminder
+sudo a2enmod cgi
+
+sudo systemctl reload apache2.service
 
 # Enable and start the ZoneMinder service
-sudo systemctl restart zoneminder
+sudo systemctl restart zoneminder.service
+sudo systemctl status zoneminder.service
 
 #----------------------------------------------------------
 # set timezone
