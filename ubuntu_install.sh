@@ -76,20 +76,17 @@ sudo a2enmod rewrite
 sudo a2enconf zoneminder
 sudo systemctl restart apache2
 
-# Enable and start the ZoneMinder service
-sudo systemctl restart zoneminder
-sudo systemctl reload apache2
-
 #----------------------------------------------------------
 # set timezone
 #----------------------------------------------------------
-sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/7.4/apache2/php.ini
+sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.2/apache2/php.ini
 
 # Restart the Apache2 service
 sudo systemctl restart apache2
 
-clear
+# Enable and start the ZoneMinder service
+sudo systemctl restart zoneminder
+
 #----------------------------------------------------
 read -p "Install complete. Open Zoneminder/Options and set the timezone. Press enter to continue" nothing
 #----------------------------------------------------
-
