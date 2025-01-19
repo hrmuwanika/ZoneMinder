@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ##############################################################
-#### Installation of zoneminder on 22.04, 20.04 or 18.04 with LAMP ####
+#### Installation of zoneminder on 22.04 with LAMP ####
 ##############################################################
 #
 #----------------------------------------------------
-read -p "This script installs ZoneMinder 1.37.x on Ubuntu 20.04 with LAMP (Apache Php Mariadb) installed...
+read -p "This script installs ZoneMinder 1.36.x on Ubuntu 22.04 with LAMP (Apache Php Mariadb) installed...
 Press Enter to continue or Ctrl + c to quit" nothing
 #----------------------------------------------------
 clear
@@ -41,11 +41,13 @@ sudo systemctl enable --now apache2 mariadb
 #--------------------------------------------------
 # ZoneMinder repository
 #--------------------------------------------------
-sudo add-apt-repository ppa:iconnor/zoneminder-master
-sudo apt update 
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:iconnor/zoneminder-1.36
+sudo apt update
 
 sudo apt install -y zoneminder
 sudo systemctl enable zoneminder
+sudo systemctl start zoneminder
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
 #mysql_secure_installation
@@ -70,8 +72,9 @@ sudo adduser www-data video
 chown -R www-data:www-data /usr/share/zoneminder/
 
 # Setup Apache2
-sudo a2enmod rewrite expires headers cgi
+sudo a2enmod rewrite
 sudo a2enconf zoneminder
+sudo systemctl restart apache2
 
 # Enable and start the ZoneMinder service
 sudo systemctl restart zoneminder
