@@ -24,18 +24,18 @@ sudo timedatectl set-timezone Africa/Kigali
 timedatectl
 
 # Install Apache PHP and other dependencies
-sudo apt install -y apache2 php libapache2-mod-php php-mysql 
+sudo apt install -y apache2 php libapache2-mod-php php-mysql ffmpeg
 
 #----------------------------------------------------------
 # set timezone
 #----------------------------------------------------------
 sudo sed -i s/";date.timezone =/date.timezone = Africa\/Kigali"/g /etc/php/8.3/apache2/php.ini
 
-sudo systemctl enable --now apache2 
-sudo systemctl start mariadb
+sudo systemctl enable apache2 
+sudo systemctl start apache2
 
 sudo apt install -y mariadb-server mariadb-client
-sudo systemctl enable --now mariadb
+sudo systemctl enable mariadb
 sudo systemctl start mariadb
 
 # Secure MySQL. Do not activate VALIDATE PASSWORD COMPONENT
@@ -48,10 +48,10 @@ sed -i '/\[mysqld\]/a innodb_buffer_pool_size = 256M' /etc/mysql/mariadb.conf.d/
 sed -i '/\[mysqld\]/a innodb_log_file_size = 32M' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # create the zoneminder database
-sudo mariadb -uroot --password="" -e "create database zm;"
-sudo mariadb -uroot --password="" -e "CREATE USER zmuser@localhost IDENTIFIED BY 'zmpass';"
-sudo mariadb -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO zmuser@localhost;"
-sudo mariadb -uroot --password="" -e "FLUSH PRIVILEGES;"
+# sudo mariadb -uroot --password="" -e "create database zm;"
+# sudo mariadb -uroot --password="" -e "CREATE USER zmuser@localhost IDENTIFIED BY 'zmpass';"
+# sudo mariadb -uroot --password="" -e "GRANT ALL PRIVILEGES ON zm.* TO zmuser@localhost;"
+# sudo mariadb -uroot --password="" -e "FLUSH PRIVILEGES;"
 
 #--------------------------------------------------
 # ZoneMinder repository
@@ -68,7 +68,8 @@ chown root:www-data /etc/zm/zm.conf
 sudo adduser www-data video
 sudo chown --recursive www-data:www-data /usr/share/zoneminder/ 
 
-sudo mariadb -uroot -p zm < /usr/share/zoneminder/db/zm_create.sql 2>/dev/null
+sudo mariadb -uroot -p < /usr/share/zoneminder/db/zm_create.sql
+sudo mariadb -uroot -p -e "grant lock tables,alter,drop,select,insert,update,delete,create,index,alter routine,create routine, trigger,execute,references on zm.* to 'zmuser'@localhost identified by 'zmpass';"
 
 # Now we enable the configurations in Apache2
 sudo a2enmod cgi 
