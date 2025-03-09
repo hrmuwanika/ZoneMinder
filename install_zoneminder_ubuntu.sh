@@ -57,7 +57,7 @@ sed -i '/\[mysqld\]/a innodb_log_file_size = 32M' /etc/mysql/mariadb.conf.d/50-s
 # ZoneMinder repository
 #--------------------------------------------------
 sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:iconnor/zoneminder-1.36
+sudo add-apt-repository ppa:iconnor/zoneminder-master
 sudo apt update
 sudo apt install -y zoneminder
 
